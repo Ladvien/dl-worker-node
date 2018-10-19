@@ -1,0 +1,14 @@
+{
+    "scriptsPath": "/Users/cthomasbrittain/dl-principal/python-scripts/",
+    "scriptName": "union.py",
+    "jobParameters": {
+    	"dataFileName": "",
+        "dataPath": "/Users/cthomasbrittain/bit-dl/data/lot-data/lot_encoded/",
+        "writePath": "/Users/cthomasbrittain/bit-dl/data/lot-data/lot_encoded/",
+        "execution": {
+        	"dataFileOne": "lot_nev_2017_encoded.csv",
+        	"dataFileTwo": "lot_nev_2018_encoded.csv",
+        	"outputFilename": "lot_nev_17-18.csv"
+        }
+    }
+}

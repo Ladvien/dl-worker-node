@@ -1,0 +1,13 @@
+{
+    "scriptsPath": "/Users/cthomasbrittain/dl-principal/python-scripts/",
+    "scriptName": "data_prep.py",
+    "jobParameters": {
+        "dataFileName": "lot_nev_2018.csv",
+        "dataPath": "/Users/cthomasbrittain/Downloads/",
+        "writePath": "/Users/cthomasbrittain/bit-dl/data/lot-data/lot_encoded/",
+        "execution": {
+        	"columnsToRemove": ["Clients Unique Identifier"],
+        	"unreasonableIncreaseThreshold": 100.0
+        }
+    }
+}

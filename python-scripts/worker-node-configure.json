@@ -1,0 +1,7 @@
+{
+    "nodeName": "mbp",
+    "root": "/Users/cthomasbrittain/dl-worker-node/",
+    "scriptsPath": "/Users/cthomasbrittain/dl-worker-node/python-scripts/",
+    "dataPath": "/Users/cthomasbrittain/bit-dl/data/lot-data/lot_encoded/lot_data_compressed/all_cocs/",
+    "writePath": "/Users/cthomasbrittain/dl-data/output/"
+}

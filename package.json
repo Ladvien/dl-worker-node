@@ -1,0 +1,33 @@
+{
+  "name": "dl-principal",
+  "version": "0.0.1",
+  "description": "Making micr-serviecs out of DL Python scripts.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ladvien/dl-principal.git"
+  },
+  "keywords": [
+    "node",
+    "server",
+    "deep-learning",
+    "python"
+  ],
+  "author": "C. Thomas Brittain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ladvien/dl-principal/issues"
+  },
+  "homepage": "https://github.com/Ladvien/dl-principal#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "json2csv": "^4.2.1",
+    "one-hot": "^2.1.4",
+    "python-shell": "^1.0.4",
+    "yargs": "^12.0.2"
+  }
+}
