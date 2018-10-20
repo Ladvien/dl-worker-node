@@ -87,6 +87,8 @@ data_file_path = data_path + data_file_name
 # ------------------------------------------------------
 # Hyperparameters
 # ------------------------------------------------------
+assignment_id = request['assignmentId']
+
 dep_var = request['depedentVariable']
 batchSize = request['batchSize']
 
@@ -522,10 +524,8 @@ model.save(rootFolder + id + "_" +"weights.hdf5")
 
 return_model = str(model.to_json())
 
-scores = model.evaluate(X_test, y_test, batch_size=500)
 result = {'status': 200, 
-          'message': 'NN Training Complete', 
-          'weightsPath': 'test',
-          'scores': str(scores),
-          'model': return_model }
+          'jobId': assignment_id,
+          'loss': str(loss),
+          'metric': str(metric)}
 print(str(json.dumps(result)))
