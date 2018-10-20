@@ -1,3 +1,5 @@
+path_for_test = '/Users/cthomasbrittain/dl-worker-node/python-scripts'
+
 # ------------------------------------------------------
 # Load DL Node Configuration
 # ------------------------------------------------------
@@ -11,17 +13,25 @@ try:
     worker_node_cfg = ''
     with open(cwd + '/worker-node-configure.json') as f:
         worker_node_cfg = json.load(f)    
-    
+except:
     try:
-        root = worker_node_cfg['root']
-        write_path = worker_node_cfg['writePath']
-        data_path = worker_node_cfg['dataPath']
+        worker_node_cfg = ''
+        with open(path_for_test + '/worker-node-configure.json') as f:
+            worker_node_cfg = json.load(f)
     except:
-        result = {'status': 400, 'error': 'There was a problem with the configuration file.'}
+        result = {'status': 400, 'error': 'There was a problem loading configuration file.'}
         print(str(json.dumps(result)))
         quit()
+
+try:
+    root = worker_node_cfg['root']
+    write_path = worker_node_cfg['writePath']
+    data_path = worker_node_cfg['dataPath']
 except:
-    worker_node_cfg = ''
+    result = {'status': 400, 'error': 'There was a problem parsing configuration file.'}
+    print(str(json.dumps(result)))
+    quit()
+
 
 # Check to see if this is a boss-node request
 try:
