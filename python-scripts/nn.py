@@ -302,7 +302,7 @@ def pileLayers(shapeSize, optimizer, loss, layers):
         model.add(Dense(1, activation=last_layer_activator))
     else:
         model.add(Dense(1))
-    model.compile(loss=loss, optimizer = optimizer, metrics=[loss])
+    model.compile(loss=loss, optimizer = optimizer, metrics=[loss, 'mae'])
     return model
 
 
@@ -450,7 +450,11 @@ f.close()
 # NN Execute
 # ------------------------------------------------------
 history = model.fit(X_train, y_train, epochs = epochs, batch_size = batchSize, callbacks=callbacks_list)
-exe_count + 1
+scores = model.evaluate(x=X_test, y=y_test, batch_size=X_test.shape[1], verbose=1, sample_weight=None, steps=None)
+loss = scores[0]
+metric = scores[1]
+
+
 ## ------------------------------------------------------
 # Create a dataframe from prediction and test
 # ------------------------------------------------------
@@ -468,7 +472,7 @@ compare.to_csv(projectPath + '/compare_' + id + '.csv')
 rmse = sqrt(mean_squared_error(compare['y_pred'], compare['y_test']))
 
 # ------------------------------------------------------
-# Plot Training History
+# Plot MSE Training History
 # ------------------------------------------------------
 import matplotlib as mpl
 mpl.use('Agg')
@@ -476,18 +480,31 @@ from matplotlib import pyplot
 pyplot.clf()
 pyplot.plot(history.history['mean_squared_error'])
 pyplot.suptitle(projectName + " " + id)
-pyplot.title('RMSE: ' + str(rmse))
-pyplot.savefig(projectPath + "/training" + "_run" + str(exe_count)  + ".pdf")
+pyplot.title('MSE: ' + str(loss))
+pyplot.savefig(projectPath + "/mse_training" + "_run" + str(exe_count)  + ".pdf")
+
+# ------------------------------------------------------
+# Plot MAE Training History
+# ------------------------------------------------------
+import matplotlib as mpl
+mpl.use('Agg')
+from matplotlib import pyplot
 pyplot.clf()
+pyplot.figure(1)
+pyplot.suptitle(projectName + " " + id)
+pyplot.title('MAE: ' + str(metric))
+pyplot.plot(history.history['mean_absolute_error'])
+pyplot.savefig(projectPath + "/mae_training" + id + "_run" + str(exe_count)  + ".pdf")
+
 
 # ------------------------------------------------------
 # Plot Accuracy and Variance
 # ------------------------------------------------------
 pyplot.clf()
-pyplot.figure(1)
+pyplot.figure(2)
 pyplot.ylim(0, compare['y_test'].max())
 pyplot.xlim(0, compare['y_test'].max())
-pyplot.scatter(compare['y_test'], compare['y_pred'], c='red', alpha=0.05)
+pyplot.scatter(compare['y_test'], compare['y_pred'], c='red', alpha=0.05, s=3)
 pyplot.xlabel('Actual', fontsize=18)
 pyplot.ylabel('Predicted', fontsize=16)
 pyplot.suptitle(projectName + " " + id)
