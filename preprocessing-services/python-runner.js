@@ -13,6 +13,7 @@ var scriptRun = function(pythonJob){
             };
             PythonShell.run(pythonJob.scriptName, options, function (err, results) {
                 if (err) throw err;
+                console.log(results);
                 try {
                     result = JSON.parse(results.pop());
                     if(result) {

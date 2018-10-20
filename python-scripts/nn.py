@@ -5,22 +5,41 @@ import os
 import sys
 import errno
 import json
+
 try:
     cwd = os.path.dirname(os.path.realpath(__file__))
-    data = ''
+    worker_node_cfg = ''
     with open(cwd + '/worker-node-configure.json') as f:
-        data = json.load(f)    
+        worker_node_cfg = json.load(f)    
     
     try:
-        root = data['root']
-        write_path = data['writePath']
-        data_path = data['dataPath']
+        root = worker_node_cfg['root']
+        write_path = worker_node_cfg['writePath']
+        data_path = worker_node_cfg['dataPath']
     except:
         result = {'status': 400, 'error': 'There was a problem with the configuration file.'}
         print(str(json.dumps(result)))
         quit()
 except:
-    data = ''
+    worker_node_cfg = ''
+
+# Check to see if this is a boss-node request
+try:
+    request = sys.argv[1]
+    request = json.loads(request)
+except:
+    # Otherwise, try to find the local test request
+    test_file_name = 'nn-job-request.json'
+    try:
+        test_file_path = root + ' /preprocessing-services/models/'    
+        with open(test_file_path + test_file_name) as f:
+            data = json.load(f)
+    except:
+        # If both fail, let the user know it didn't work out.
+        result = {'status': 200, 
+          'error': 'No Job info found and local test not setup.'}
+        print(str(json.dumps(result)))
+        quit()
 
 # ------------------------------------------------------
 # Training Session ID path generation
@@ -34,45 +53,10 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 id = id_generator()
 exe_count = 1
-
+  
 # ------------------------------------------------------
-# TEST
+# Save Job locally
 # ------------------------------------------------------
-test_file_name = 'nn-job-request.json'
-if not data:
-    test_file_path = '/Users/cthomasbrittain/dl-worker-node/preprocessing-services/models/'    
-    with open(test_file_path + test_file_name) as f:
-        data = json.load(f)
-
-root = data['root']
-write_path = data['writePath']
-data_path = data['dataPath']
-        
-saved_parameter_file = write_path + 'past_jobs/' + id + '_' + test_file_name
-if not os.path.exists(os.path.dirname(saved_parameter_file)):
-    try:
-        os.makedirs(os.path.dirname(saved_parameter_file))
-    except OSError as exc: # Guard against race condition
-        if exc.errno != errno.EEXIST:
-            raise
-
-with open(saved_parameter_file, 'w') as f:
-    f.write(str(json.dumps(data)))
-
-
-    
-# ------------------------------------------------------
-# Paths
-# ------------------------------------------------------
-
-try:
-    request = sys.argv[1]
-    request = json.loads(request)
-except:
-    request = data
-    
-write_path = request['writePath']
-
 saved_parameter_file = write_path + 'past_jobs/' + id + '_job.json'
 if not os.path.exists(os.path.dirname(saved_parameter_file)):
     try:
@@ -82,7 +66,6 @@ if not os.path.exists(os.path.dirname(saved_parameter_file)):
             raise
 with open(saved_parameter_file, 'w') as f:
     f.write(str(json.dumps(request)))
-
 
 # ------------------------------------------------------
 # Load Paths
@@ -121,7 +104,6 @@ scaler_type = request['scalerType']
 
 cross_val_scoring_type = request['crossValidationCrossingType']
 cross_val_only = request['crossValidateOnly']
-
 
 # ------------------------------------------------------
 # Setup Optimizer
@@ -162,13 +144,6 @@ df = df.reindex(np.random.permutation(df.index))
 
 df = df.loc[df[dep_var] < max_dep_var]
 df = df.loc[df[dep_var] > min_dep_var]
-
-# Remove mechanically stopped stays
-df = df[df[dep_var] != 90]
-df = df[df[dep_var] != 365]
-df = df[df[dep_var] != 730]
-
-
 
 # ------------------------------------------------------
 # Place Dependent Variable at end of dataframe

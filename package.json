@@ -26,7 +26,6 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "json2csv": "^4.2.1",
-    "one-hot": "^2.1.4",
     "python-shell": "^1.0.4",
     "yargs": "^12.0.2"
   }
