@@ -1,4 +1,4 @@
-#path_for_test = '/Users/cthomasbrittain/dl-worker-node/python-scripts/mbp-node'
+path_for_test = '/Users/cthomasbrittain/dl-worker-node/python-scripts/mbp-node'
 
 # ------------------------------------------------------
 # Load DL Node Configuration
