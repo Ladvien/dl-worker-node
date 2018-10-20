@@ -1,4 +1,4 @@
-path_for_test = '/Users/cthomasbrittain/dl-worker-node/python-scripts'
+#path_for_test = '/Users/cthomasbrittain/dl-worker-node/python-scripts/mbp-node'
 
 # ------------------------------------------------------
 # Load DL Node Configuration
@@ -41,9 +41,9 @@ except:
     # Otherwise, try to find the local test request
     test_file_name = 'nn-job-request.json'
     try:
-        test_file_path = root + ' /preprocessing-services/models/'    
+        test_file_path = root + '/preprocessing-services/models/'    
         with open(test_file_path + test_file_name) as f:
-            data = json.load(f)
+            request = json.load(f)
     except:
         # If both fail, let the user know it didn't work out.
         result = {'status': 200, 
