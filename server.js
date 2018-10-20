@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var pythonRunner = require('./preprocessing-services/python-runner');
+var axios = require('axios');
 
 var app = express();
 const port = 3000;
@@ -12,7 +13,8 @@ app.post('/scripts/run', (req, res) => {
     try {
         let pythonJob = req.body;
         pythonRunner.scriptRun(pythonJob)
-        .then((response, rejection) => {
+        .then((response) => {
+            console.log(response);
             res.send(response);
         });
     } catch (err) {

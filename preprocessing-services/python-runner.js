@@ -1,10 +1,12 @@
 let {PythonShell} = require('python-shell')
 var fs = require('fs');
 var path = require('path');
+var axios = require('axios');
 
-var scriptRun = function(pythonJob){    
+var scriptRun = function(pythonJob){
     return new Promise((resolve, reject) => {
         try {
+            let callbackAddress = pythonJob.callbackAddress;
             let options = {
                 mode: 'text',
                 pythonOptions: ['-u'], // get print results in real-time
@@ -16,14 +18,24 @@ var scriptRun = function(pythonJob){
                 try {
                     result = JSON.parse(results.pop());
                     if(result) {
-                        resolve(result);
+                        console.log(callbackAddress + '/callback')
+                        axios({
+                            method: 'post',
+                            url: callbackAddress + '/callback',
+                            data: result
+                        }).then((response) => {
+                            console.log(response.data);
+                        }).catch((error) => {
+                            console.log(error);
+                        });
                     } else {
-                        reject({'err': ''})
+                        
                     }
                 } catch (err) {
-                    reject({'error': 'Failed to parse Python script return object.'})
+                   console.log(err)
                 }
             });
+            resolve({'message': 'job started'});
         } catch (err) {
             reject(err)
         }
