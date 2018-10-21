@@ -3,7 +3,9 @@ var fs = require('fs');
 var path = require('path');
 var axios = require('axios');
 
-var scriptRun = function(pythonJob){
+var scriptRun = function(pythonJob, worker){
+    console.log(worker);
+    worker.status = 'busy';
     return new Promise((resolve, reject) => {
         try {
             let callbackAddress = pythonJob.callbackAddress;
@@ -24,20 +26,22 @@ var scriptRun = function(pythonJob){
                             url: callbackAddress + '/callback',
                             data: result
                         }).then((response) => {
-                            console.log(response.data);
+                            console.log(`Worker let let the Boss know job is complete.`);
+                            worker.status = 'bored';
                         }).catch((error) => {
-                            console.log(error);
+                            worker.status = 'bored'
                         });
                     } else {
-                        
+                        worker.status = 'bored'
                     }
                 } catch (err) {
-                   console.log(err)
+                   worker.status = 'bored'
                 }
             });
             resolve({'message': 'job started'});
         } catch (err) {
             reject(err)
+            worker.status = 'bored'
         }
     });
 }

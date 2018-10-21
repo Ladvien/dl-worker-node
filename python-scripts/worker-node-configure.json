@@ -1,5 +1,6 @@
 {
     "nodeName": "dl",
+    "bossAddress": "http://maddatum.com:3000",
     "root": "/home/dl/Desktop/dl-worker-node/",
     "scriptsPath": "/home/dl/Desktop/dl-worker-node/python-scripts",
     "dataPath": "/home/dl/Desktop/length-of-homelessness-nn-trainer/data/lot-data/",
