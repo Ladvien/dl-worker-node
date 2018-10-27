@@ -525,7 +525,7 @@ model.save(rootFolder + id + "_" +"weights.hdf5")
 return_model = str(model.to_json())
 
 result = {'status': 200, 
-          'jobId': assignment_id,
+          'orderId': assignment_id,
           'loss': str(loss),
           'metric': str(metric)}
 print(str(json.dumps(result)))
