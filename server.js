@@ -37,7 +37,7 @@ var j = schedule.scheduleJob('*/1 * * * *', function(){
             url: bossAddress + `/bored/${nodeName}`
         }).then((response) => {
             let orderId = response.data._id
-            let jobId = response.data.jobId;
+            let jobId = response. data.jobId;
             console.log(`Boss provided jobID #${jobId}`);
             axios({
                 method: 'get',

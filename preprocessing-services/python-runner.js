@@ -40,7 +40,7 @@ var scriptRun = function(pythonJob, worker){
             });
             resolve({'message': 'job started'});
         } catch (err) {
-            reject(err)
+            resolve(err)
             worker.status = 'bored'
         }
     });
