@@ -89,7 +89,7 @@ data_file_path = data_path + data_file_name
 # ------------------------------------------------------
 assignment_id = request['assignmentId']
 
-dep_var = request['depedentVariable']
+dep_var = request['dependentVariable']
 batchSize = request['batchSize']
 
 epochs = request['epochs']
@@ -524,7 +524,7 @@ model.save(rootFolder + id + "_" +"weights.hdf5")
 
 return_model = str(model.to_json())
 
-result = {'status': 200, 
+result = {'status': 'completed',
           'orderId': assignment_id,
           'loss': str(loss),
           'metric': str(metric)}

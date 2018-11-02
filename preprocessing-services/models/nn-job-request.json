@@ -5,7 +5,7 @@
 	"writePath": "/Users/cthomasbrittain/dl-data/output/",
 	"projectName": "lot_homeless",
 	"dataPath": "/Users/cthomasbrittain/bit-dl/data/lot-data/lot_encoded/lot_data_compressed/all_cocs/",
-	"depedentVariable": "con_lot",
+	"dependentVariable": "con_lot",
 	"crossValidateOnly": true,
 	"crossValidationCrossingType": "neg_mean_squared_error",
 	"batchSize": 1024,
