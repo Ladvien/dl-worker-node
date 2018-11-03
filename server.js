@@ -32,31 +32,37 @@ app.use(bodyParser.json())
 var j = schedule.scheduleJob('*/1 * * * *', function(){
     if (worker.status === 'bored') {
         console.log('Worker is bored.');
-        axios({
-            method: 'post',
-            url: bossAddress + `/bored/${nodeName}`
-        }).then((response) => {
-            let orderId = response.data._id
-            let jobId = response. data.jobId;
-            console.log(`Boss provided jobID #${jobId}`);
+        try {
             axios({
-                method: 'get',
-                url: bossAddress + `/retrieve/job/${jobId}`
+                method: 'post',
+                url: bossAddress + `/bored/${nodeName}`
             }).then((response) => {
-                let job = response.data;
-                console.log(`Worker found the details for jobID #${jobId}`);
-                job.callbackAddress = bossAddress;
-                job.assignmentId = orderId;
-                pythonRunner.scriptRun(job, worker)
-                .then((response) => {
-                    console.log('Worker started job, will let Boss know when finished.');
+                let orderId = response.data._id
+                let jobId = response. data.jobId;
+                console.log(`Boss provided jobID #${jobId}`);
+                axios({
+                    method: 'get',
+                    url: bossAddress + `/retrieve/job/${jobId}`
+                }).then((response) => {
+                    let job = response.data;
+                    console.log(`Worker found the details for jobID #${jobId}`);
+                    job.callbackAddress = bossAddress;
+                    job.assignmentId = orderId;
+                    pythonRunner.scriptRun(job, worker)
+                    .then((response) => {
+                        console.log('Worker started job, will let Boss know when finished.');
+                    });
+                }).catch((error) => {
+                    console.log(error);
                 });
             }).catch((error) => {
-                console.log(error);
+                console.log('Failed to find new job.')
             });
-        }).catch((error) => {
-            console.log('Failed to find new job.')
-        });
+        } catch (error) {
+            console.log('Bored Job request failed. Uh-oh.')
+            console.log(error);
+        }
+        
     }
 });
 
